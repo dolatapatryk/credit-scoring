@@ -1,13 +1,18 @@
 package pl.patrykdolata.creditscoring.view
 
-import pl.patrykdolata.creditscoring.models.ClientModel
 import tornadofx.Wizard
 
 class CreditScoringWizard : Wizard("Ocena zdolności kredytowej", "Wprowadź informację") {
-    val client: ClientModel by inject()
 
     init {
         add(BasicClientInfoView::class)
+        add(FinancialClientInfoView::class)
         showSteps = true
+        enableStepLinks = true
+        stepsTextProperty.value = "Kroki"
+        backButtonTextProperty.value = "Cofnij"
+        cancelButtonTextProperty.value = "Anuluj"
+        nextButtonTextProperty.value = "Dalej"
+        finishButtonTextProperty.value = "Zakończ"
     }
 }
