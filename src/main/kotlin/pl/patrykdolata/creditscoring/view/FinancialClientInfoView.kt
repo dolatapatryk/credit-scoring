@@ -28,6 +28,6 @@ class FinancialClientInfoView : View("Zatrudnienie i finanse") {
     }
 
     fun xd() {
-        
+
     }
 }
