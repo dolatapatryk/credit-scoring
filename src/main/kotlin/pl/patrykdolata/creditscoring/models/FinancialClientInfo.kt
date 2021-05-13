@@ -1,14 +1,16 @@
 package pl.patrykdolata.creditscoring.models
 
-import javafx.beans.property.SimpleDoubleProperty
+import javafx.beans.property.SimpleIntegerProperty
 import tornadofx.ItemViewModel
 
-class FinancialClientInfo(incomeValue: Double, val employmentType: EmploymentType) {
-    val income = SimpleDoubleProperty(this, "income", incomeValue)
+class FinancialClientInfo(incomeValue: Int, expensesValue: Int, val employmentType: EmploymentType) {
+    val income = SimpleIntegerProperty(this, "income", incomeValue)
+    val expenses = SimpleIntegerProperty(this, "expenses", expensesValue)
 }
 
 class FinancialClientInfoModel : ItemViewModel<FinancialClientInfo>() {
     val income = bind(FinancialClientInfo::income, autocommit = true)
+    val expenses = bind(FinancialClientInfo::expenses, autocommit = true)
     val employmentType = bind(FinancialClientInfo::employmentType, autocommit = true)
 }
 

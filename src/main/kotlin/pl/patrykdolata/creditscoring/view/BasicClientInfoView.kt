@@ -1,15 +1,11 @@
 package pl.patrykdolata.creditscoring.view
 
-import pl.patrykdolata.creditscoring.fuzzy.FirstService
-import pl.patrykdolata.creditscoring.fuzzy.SecondService
 import pl.patrykdolata.creditscoring.models.BasicClientInfoModel
 import pl.patrykdolata.creditscoring.models.Sex
 import tornadofx.*
 
 class BasicClientInfoView : View("Podstawowe informacje") {
     private val basicClientInfo: BasicClientInfoModel by inject()
-    private val firstService: FirstService by di()
-    private val secondService: SecondService by di()
 
     override val root = form {
         fieldset(title) {
@@ -34,7 +30,5 @@ class BasicClientInfoView : View("Podstawowe informacje") {
                 combobox(basicClientInfo.sex, Sex.values().toList()).required()
             }
         }
-        label { text = firstService.getMessage() }
-        label { text = secondService.getMessage() }
     }
 }
