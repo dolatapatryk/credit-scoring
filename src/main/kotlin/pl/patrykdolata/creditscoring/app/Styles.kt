@@ -20,7 +20,7 @@ class Styles : Stylesheet() {
             fontWeight = FontWeight.BOLD
         }
         clearButton {
-            cursor = Cursor.CLOSED_HAND
+            cursor = Cursor.HAND
         }
     }
 }

@@ -19,14 +19,10 @@ class FinancialClientInfoModel : ItemViewModel<FinancialClientInfo>() {
     val contractEndDate = bind(FinancialClientInfo::contractEndDate, autocommit = true)
 }
 
-enum class EmploymentType(private val type: String) {
-    PERMANENT("Umowa o pracę"),
-    B2B("B2B"),
-    CONTRACT_OF_MANDATE("Umowa zlecenie");
+enum class EmploymentType(private val type: String, private val fuzzyValue: Int) {
+    PERMANENT("Umowa o pracę", 0),
+    B2B("B2B", 1),
+    CONTRACT_OF_MANDATE("Umowa zlecenie", 2);
 
     override fun toString(): String = type
-}
-
-enum class EmploymentPeriod(private val monthPeriod: Int) {
-
 }

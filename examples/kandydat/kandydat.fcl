@@ -1,0 +1,54 @@
+FUNCTION_BLOCK napiwek	// Definicja bloku (moze byc wiecej blokow w pliku)
+
+VAR_INPUT				// Definiuje zmienne wejsciowe
+	wiek : REAL;
+	inteligencja : REAL;
+	doswiadczenie : REAL;
+END_VAR
+
+VAR_OUTPUT				// Definiuje zmienne wyjsciowe
+	ocena : REAL;
+END_VAR
+
+FUZZIFY wiek		
+	TERM za_mlody := (0, 1) (18, 0) ; 
+	TERM mlody := (16, 0) (18, 1) (25, 1) (33, 0.5) (40, 0); 
+	TERM sredni := (25, 0) (33,0.5) (40, 1) (55, 0);
+	TERM stary := (40, 0) (55, 1);
+END_FUZZIFY
+
+FUZZIFY inteligencja
+	TERM mala := (0, 1) (70, 1) (90, 0.5) (110, 0) ;
+	TERM srednia := (90, 0) (110, 1) (120, 0.5) (130, 0);
+	TERM duza := (110, 0) (120, 0.5) (130, 1);
+END_FUZZIFY
+
+FUZZIFY doswiadczenie		
+	TERM male := (0, 1) (2, 1) (3, 0.5) (4, 0) ;
+	TERM srednie := (1, 0) (3, 0.75) (4,1) (8,0.5) (12,0);
+	TERM duze := (6, 0) (8,0.75) (12,1);
+END_FUZZIFY
+
+DEFUZZIFY ocena
+	TERM slaby := (0,1) (5,1) (10,0.75) (12, 0);
+	TERM przecietny := (8,0) (15,1) (20,0);
+	TERM dobry := (15,0) (20,1) (25,0);
+	TERM bardzo_dobry := (20,0) (30,1);
+	METHOD : COG;		// Metoda defuzyfikacji - 'Center Of Gravity' - 'Sreodka ciezkosci'
+	DEFAULT := 0;		
+END_DEFUZZIFY
+
+RULEBLOCK No1
+	AND : MIN;			// Uzycie 'min' jako 'and' (implikuje uzycie 'max' jako 'or' dla zapewnienia praw DeMorgan'a)
+	ACT : MIN;			// Uzycie  'min' jako metody aktywacji
+	ACCU : MAX;			// Metoda agregacji - 'max'
+
+	RULE 1 : IF inteligencja IS mala OR wiek IS za_mlody THEN ocena IS slaby;
+	RULE 2 : IF inteligencja IS duza AND doswiadczenie IS duze THEN ocena IS bardzo_dobry;
+	RULE 3 : IF wiek IS stary AND doswiadczenie IS male THEN ocena IS slaby;
+	RULE 4 : IF doswiadczenie IS srednie or inteligencja IS srednia or wiek IS mlody then ocena IS przecietny;
+	RULE 5 : IF inteligencja IS duza OR doswiadczenie IS duze and wiek IS NOT za_mlody THEN ocena IS dobry;
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
+

@@ -1,12 +1,11 @@
 package pl.patrykdolata.creditscoring.view
 
-import javafx.scene.control.TextFormatter
 import pl.patrykdolata.creditscoring.app.Styles
+import pl.patrykdolata.creditscoring.integerFilter
+import pl.patrykdolata.creditscoring.integerValidator
 import pl.patrykdolata.creditscoring.models.EmploymentType
 import pl.patrykdolata.creditscoring.models.FinancialClientInfoModel
 import tornadofx.*
-import java.time.LocalDate
-import java.util.*
 
 class FinancialClientInfoView : View("Zatrudnienie i finanse") {
     private val financialClientInfo: FinancialClientInfoModel by inject()
@@ -16,15 +15,15 @@ class FinancialClientInfoView : View("Zatrudnienie i finanse") {
             text("Kwoty podawaj do pełnych złotówek")
             field("Dochód miesięczny (netto)") {
                 textfield(financialClientInfo.income) {
-                    filterInput { amountFilter(it) }
-                    validator { amountValidator(it, this) }
+                    filterInput { integerFilter(it) }
+                    validator { integerValidator(it, this) }
                 }
                 text("zł")
             }
-            field("Miesięczne wydatki") {
+            field("Miesięczne wydatki (czynsz, opłaty itp.)") {
                 textfield(financialClientInfo.expenses) {
-                    filterInput { amountFilter(it) }
-                    validator { amountValidator(it, this) }
+                    filterInput { integerFilter(it) }
+                    validator { integerValidator(it, this) }
                 }
                 text("zł")
             }
@@ -37,7 +36,7 @@ class FinancialClientInfoView : View("Zatrudnienie i finanse") {
             field("Forma zatrudnienia") {
                 combobox(financialClientInfo.employmentType, EmploymentType.values().toList())
             }
-            field("Umowa do:") {
+            field("Umowa do:\n(czas nieokreślony - zostaw puste)") {
                 datepicker(financialClientInfo.contractEndDate) {
                     value = null
                     isShowWeekNumbers = false
@@ -48,13 +47,5 @@ class FinancialClientInfoView : View("Zatrudnienie i finanse") {
                 }
             }
         }
-    }
-
-    private fun amountFilter(text: TextFormatter.Change): Boolean =
-        text.controlNewText.isInt() && text.controlNewText.toInt() > 0
-
-    private fun amountValidator(text: String?, context: ValidationContext): ValidationMessage? {
-        val amount = text?.toIntOrNull()
-        return if (amount == null || amount == 0) context.error("Wprowadź prawidłową kwotę") else null
     }
 }

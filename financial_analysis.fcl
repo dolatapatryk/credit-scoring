@@ -1,0 +1,49 @@
+FUNCTION_BLOCK financial_analysis
+
+VAR_INPUT
+    income: REAL;
+    expenses: REAL;
+    employment_type: REAL;
+    contract_expiration: REAL;
+END_VAR;
+
+VAR_OUTPUT
+    financial_score: REAL;
+END_VAR
+
+FUZZIFY actual_income
+	TERM low := (0, 1) (30, 0.5) (45,0);
+    TERM medium := trian 30 65 75;
+    TERM high := (70, 0) (77, 0.5) (85, 1);
+END_FUZZIFY
+
+FUZZIFY employment_type
+	TERM permanent := 0;
+	TERM b2b := 1;
+	TERM contract_of_mandate := 2;
+END_FUZZIFY
+
+FUZZIFY contract_expiration
+	TERM soon := (0, 1) (6, 1) (12, 0.75), (24, 0);
+	TERM later := (12, 0) (24, 1) (36, 0)
+	TERM never := (36, 1)
+END_FUZZIFY
+
+DEFUZZIFY financial_score
+	TERM low := (0, 1) (30, 0.5) (45,0);
+	TERM medium := trian 30 65 75;
+	TERM high := (70, 0) (77, 0.5) (85, 1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+
+RULEBLOCK No1
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK

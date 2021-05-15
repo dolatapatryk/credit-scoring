@@ -1,6 +1,8 @@
 package pl.patrykdolata.creditscoring.view
 
 import pl.patrykdolata.creditscoring.models.BasicClientInfoModel
+import pl.patrykdolata.creditscoring.models.Education
+import pl.patrykdolata.creditscoring.models.MaritalStatus
 import pl.patrykdolata.creditscoring.models.Sex
 import tornadofx.*
 
@@ -28,6 +30,12 @@ class BasicClientInfoView : View("Podstawowe informacje") {
             }
             field("Płeć") {
                 combobox(basicClientInfo.sex, Sex.values().toList()).required()
+            }
+            field("Stan cywilny") {
+                combobox(basicClientInfo.maritalStatus, MaritalStatus.values().toList()).required()
+            }
+            field("Wykształcenie") {
+                combobox(basicClientInfo.education, Education.values().toList()).required()
             }
         }
     }

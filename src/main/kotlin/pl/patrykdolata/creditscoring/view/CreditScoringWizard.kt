@@ -7,6 +7,7 @@ class CreditScoringWizard : Wizard("Ocena zdolności kredytowej", "Wprowadź inf
     init {
         add(BasicClientInfoView::class)
         add(FinancialClientInfoView::class)
+        add(CreditInfoView::class)
         showSteps = true
         enableStepLinks = true
         stepsTextProperty.value = "Kroki"
