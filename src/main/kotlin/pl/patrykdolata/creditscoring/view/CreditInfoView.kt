@@ -1,6 +1,7 @@
 package pl.patrykdolata.creditscoring.view
 
 import javafx.beans.binding.DoubleBinding
+import javafx.beans.binding.IntegerBinding
 import pl.patrykdolata.creditscoring.integerFilter
 import pl.patrykdolata.creditscoring.integerValidator
 import pl.patrykdolata.creditscoring.models.CreditInfoModel
@@ -17,6 +18,19 @@ class CreditInfoView : View("Informacje o kredycie") {
                 textfield(creditInfo.amount) {
                     filterInput { integerFilter(it) }
                     validator { integerValidator(it, this) }
+                }
+                text("zł")
+            }
+            field("Wkład własny") {
+                textfield(creditInfo.ownContribution) {
+                    filterInput { integerFilter(it) }
+                    validator { integerValidator(it, this) }
+                }
+                text("zł")
+            }
+            field("Kwota do spłaty") {
+                textfield(amountToPayBinding()) {
+                    isDisable = true
                 }
                 text("zł")
             }
@@ -38,6 +52,22 @@ class CreditInfoView : View("Informacje o kredycie") {
             }
         }
 
+    }
+
+    private fun amountToPayBinding(): IntegerBinding {
+        return object : IntegerBinding() {
+            init {
+                super.bind(creditInfo.amount, creditInfo.ownContribution)
+            }
+
+            override fun computeValue(): Int {
+                return creditInfo.amount.value - creditInfo.ownContribution.value
+            }
+
+            override fun dispose() {
+                super.unbind(creditInfo.amount, creditInfo.ownContribution)
+            }
+        }
     }
 
     private fun creditInstallmentBinding(): DoubleBinding {

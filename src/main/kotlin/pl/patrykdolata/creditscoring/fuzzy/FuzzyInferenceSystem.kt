@@ -1,25 +1,29 @@
 package pl.patrykdolata.creditscoring.fuzzy
 
 import net.sourceforge.jFuzzyLogic.FIS
-import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart
 
 class FuzzyInferenceSystem {
 
-    fun process() {
-        val filename = "./napiwek.fcl"
-        val fis = FIS.load(filename, true)
+    fun process(fuzzyFunctionBlock: QualitativeAnalysis) {
+        val fuzzySystem = FIS.load(fuzzyFunctionBlock.filename(), true)
 
-        val functionBlock = fis.getFunctionBlock(null)
-        JFuzzyChart.get().chart(functionBlock)
+        val functionBlock = fuzzySystem.getFunctionBlock(null)
+//        JFuzzyChart.get().chart(functionBlock)
 
         // set variables
-        // fis.setVariable("var", value)
+        for ((name, value) in fuzzyFunctionBlock.inputVariables) {
+            fuzzySystem.setVariable(name, value)
+        }
 
-        fis.evaluate()
+        fuzzySystem.evaluate()
 
-        val outVariable = functionBlock.getVariable("out")
-        JFuzzyChart.get().chart(outVariable, outVariable.defuzzifier, true)
+        val outVariableName = fuzzyFunctionBlock.outputVariableName()
+        val outVariable = functionBlock.getVariable(outVariableName)
+//        JFuzzyChart.get().chart(outVariable, outVariable.defuzzifier, true)
 
-        val outVariableValue = fis.getVariable("out").value
+        println(outVariable.value)
+        println("Membership low: ${outVariable.getMembership("low")}")
+        println("Membership medium: ${outVariable.getMembership("medium")}")
+        println("Membership high: ${outVariable.getMembership("high")}")
     }
 }

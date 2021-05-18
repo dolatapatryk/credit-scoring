@@ -2,23 +2,17 @@ package pl.patrykdolata.creditscoring.models
 
 import tornadofx.ItemViewModel
 
-class BasicClientInfo(val name: String, val surname: String, val age: String, val sex: Sex,
-                      val maritalStatus: MaritalStatus, val education: Education)
+class BasicClientInfo(val age: Int, val maritalStatus: MaritalStatus, val education: Education, val workYears: Int)
 
 class BasicClientInfoModel : ItemViewModel<BasicClientInfo>() {
-    val name = bind(BasicClientInfo::name, autocommit = true)
-    val surname = bind(BasicClientInfo::surname, autocommit = true)
     val age = bind(BasicClientInfo::age, autocommit = true)
-    val sex = bind(BasicClientInfo::sex, autocommit = true)
     val maritalStatus = bind(BasicClientInfo::maritalStatus, autocommit = true)
     val education = bind(BasicClientInfo::education, autocommit = true)
-}
+    val workYears = bind(BasicClientInfo::workYears, autocommit = true)
 
-enum class Sex(private val sex: String, private val fuzzyValue: Int) {
-    MALE("Mężczyzna", 0),
-    FEMALE("Kobieta", 1);
-
-    override fun toString(): String = sex
+    override fun onCommit() {
+        item = BasicClientInfo(age.value, maritalStatus.value, education.value, workYears.value)
+    }
 }
 
 enum class MaritalStatus(private val status: String, private val fuzzyValue: Int) {
@@ -26,6 +20,8 @@ enum class MaritalStatus(private val status: String, private val fuzzyValue: Int
     MARRIED("Zamężny/a", 1),
     DIVORCED("Rozwiedziony/a", 2),
     WIDOWER("Wdowiec/Wdowa", 3);
+
+    fun fuzzyValue() = fuzzyValue
 
     override fun toString(): String = status
 }
@@ -35,6 +31,8 @@ enum class Education(private val education: String, private val fuzzyValue: Int)
     VOCATIONAL("Zawodowe", 1),
     MEDIUM("Średnie", 2),
     HIGH("Wyższe", 3);
+
+    fun fuzzyValue() = fuzzyValue
 
     override fun toString(): String = education
 }
