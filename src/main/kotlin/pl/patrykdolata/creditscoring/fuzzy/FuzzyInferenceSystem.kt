@@ -1,6 +1,7 @@
 package pl.patrykdolata.creditscoring.fuzzy
 
 import net.sourceforge.jFuzzyLogic.FIS
+import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart
 
 class FuzzyInferenceSystem {
 
@@ -8,7 +9,7 @@ class FuzzyInferenceSystem {
         val fuzzySystem = FIS.load(fuzzyFunctionBlock.filename(), true)
 
         val functionBlock = fuzzySystem.getFunctionBlock(null)
-//        JFuzzyChart.get().chart(functionBlock)
+        JFuzzyChart.get().chart(functionBlock)
 
         // set variables
         for ((name, value) in fuzzyFunctionBlock.inputVariables) {
@@ -19,7 +20,7 @@ class FuzzyInferenceSystem {
 
         val outVariableName = fuzzyFunctionBlock.outputVariableName()
         val outVariable = functionBlock.getVariable(outVariableName)
-//        JFuzzyChart.get().chart(outVariable, outVariable.defuzzifier, true)
+        JFuzzyChart.get().chart(outVariable, outVariable.defuzzifier, true)
 
         println(outVariable.value)
         println("Membership low: ${outVariable.getMembership("low")}")
