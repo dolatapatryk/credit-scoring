@@ -1,8 +1,22 @@
 package pl.patrykdolata.creditscoring.models
 
+import pl.patrykdolata.creditscoring.fuzzy.FuzzyModel
 import tornadofx.ItemViewModel
 
-class BasicClientInfo(val age: Int, val maritalStatus: MaritalStatus, val education: Education, val workYears: Int)
+class BasicClientInfo(
+    val age: Int, val maritalStatus: MaritalStatus, val education: Education,
+    val workYears: Int
+) : FuzzyModel {
+
+    override fun getFuzzyInputVariables(): Map<String, Double> {
+        return mapOf(
+            "age" to age.toDouble(),
+            "marital_status" to maritalStatus.fuzzyValue().toDouble(),
+            "education" to education.fuzzyValue().toDouble(),
+            "work_years" to workYears.toDouble()
+        )
+    }
+}
 
 class BasicClientInfoModel : ItemViewModel<BasicClientInfo>() {
     val age = bind(BasicClientInfo::age, autocommit = true)

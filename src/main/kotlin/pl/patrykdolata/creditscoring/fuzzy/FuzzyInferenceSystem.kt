@@ -5,14 +5,14 @@ import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart
 
 class FuzzyInferenceSystem {
 
-    fun process(fuzzyFunctionBlock: QualitativeAnalysis) {
+    fun process(fuzzyFunctionBlock: FuzzyFunctionBlock) {
         val fuzzySystem = FIS.load(fuzzyFunctionBlock.filename(), true)
 
         val functionBlock = fuzzySystem.getFunctionBlock(null)
         JFuzzyChart.get().chart(functionBlock)
 
         // set variables
-        for ((name, value) in fuzzyFunctionBlock.inputVariables) {
+        for ((name, value) in fuzzyFunctionBlock.inputVariables()) {
             fuzzySystem.setVariable(name, value)
         }
 

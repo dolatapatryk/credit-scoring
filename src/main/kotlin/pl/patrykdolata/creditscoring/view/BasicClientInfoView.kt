@@ -1,7 +1,6 @@
 package pl.patrykdolata.creditscoring.view
 
 import pl.patrykdolata.creditscoring.app.Styles
-import pl.patrykdolata.creditscoring.fuzzy.FuzzyFunctionBlock
 import pl.patrykdolata.creditscoring.fuzzy.FuzzyInferenceSystem
 import pl.patrykdolata.creditscoring.fuzzy.QualitativeAnalysis
 import pl.patrykdolata.creditscoring.integerFilter
@@ -14,7 +13,7 @@ import tornadofx.*
 class BasicClientInfoView : View("Podstawowe informacje") {
     private val basicClientInfo: BasicClientInfoModel by inject()
 
-    private val fuzzyInferenceSystem: FuzzyInferenceSystem  = FuzzyInferenceSystem()
+    private val fuzzyInferenceSystem: FuzzyInferenceSystem = FuzzyInferenceSystem()
 
     override val root = form {
         fieldset(title) {
@@ -41,7 +40,7 @@ class BasicClientInfoView : View("Podstawowe informacje") {
                 action {
                     basicClientInfo.commit()
                     if (basicClientInfo.item != null) {
-                        val qualitativeAnalysis = QualitativeAnalysis(basicClientInfo)
+                        val qualitativeAnalysis = QualitativeAnalysis(basicClientInfo.item)
                         fuzzyInferenceSystem.process(qualitativeAnalysis)
                     }
                 }
