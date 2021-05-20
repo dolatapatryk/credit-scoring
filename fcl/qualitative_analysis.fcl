@@ -1,0 +1,84 @@
+FUNCTION_BLOCK qualitative_analysis
+
+VAR_INPUT
+    age: REAL;
+    marital_status: REAL;
+    education: REAL;
+    work_years: REAL;
+END_VAR
+
+VAR_OUTPUT
+    qualitative_score: REAL;
+END_VAR
+
+FUZZIFY age
+	TERM underage := (0, 1) (17, 1) (18, 0);
+	TERM young := (17, 0) (18, 1) (25, 1) (33, 0.5) (40, 0);
+    TERM middle_aged := (25, 0) (33, 0.5) (40, 1) (60, 0);
+    TERM old := (40, 0) (60, 0.5) (70, 1) (120, 1);
+END_FUZZIFY
+
+FUZZIFY marital_status
+	TERM single := 0;
+	TERM married := 1;
+	TERM divorced := 2;
+	TERM widower := 3;
+END_FUZZIFY
+
+FUZZIFY education
+	TERM basic := 0;
+	TERM vocational := 1;
+	TERM medium := 2;
+	TERM high := 3;
+END_FUZZIFY
+
+FUZZIFY work_years
+	TERM short := (0, 1) (3, 1) (6, 0);
+    TERM medium := trian 3 6 12;
+    TERM long := (6, 0) (12, 1) (80, 1);
+END_FUZZIFY
+
+DEFUZZIFY qualitative_score
+	TERM low := (0, 1) (30, 0.5) (45,0);
+	TERM medium := trian 30 65 75;
+	TERM high := (70, 0) (77, 0.5) (85, 1) (100, 1);
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+
+RULEBLOCK No1
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+
+	RULE 1 : IF age IS underage THEN qualitative_score IS low;
+    RULE 2 : IF age IS young AND (marital_status IS single OR marital_status IS married OR marital_status IS widower) AND education IS basic AND work_years IS long THEN qualitative_score IS medium;
+    RULE 3 : IF age IS young AND (marital_status IS single OR marital_status IS married OR marital_status IS widower) AND education IS high AND work_years IS short THEN qualitative_score IS medium;
+    RULE 4 : IF age IS young AND (marital_status IS single OR marital_status IS married OR marital_status IS widower) AND education IS high AND work_years IS medium THEN qualitative_score IS high;
+    RULE 5 : IF age IS young AND (marital_status IS single OR marital_status IS married OR marital_status IS widower) AND (education IS vocational OR education IS medium) AND work_years IS short THEN qualitative_score IS low;
+    RULE 6 : IF age IS young AND (marital_status IS single OR marital_status IS married OR marital_status IS widower) AND (education IS vocational OR education IS medium) AND (work_years IS medium OR work_years IS long) THEN qualitative_score IS medium;
+    RULE 7 : IF education IS high AND work_years IS long THEN qualitative_score IS high;
+    RULE 8 : IF education IS basic AND (work_years IS short OR work_years IS medium) THEN qualitative_score IS low;
+    RULE 9 : IF (education IS medium OR education IS vocational) AND work_years IS short THEN qualitative_score IS low;
+    RULE 10 : IF age IS young AND marital_status IS divorced AND (education IS vocational OR education IS medium) AND work_years IS medium THEN qualitative_score IS low;
+    RULE 11 : IF age IS young AND marital_status IS divorced AND (education IS vocational OR education IS medium) AND work_years IS long THEN qualitative_score IS medium;
+    RULE 12 : IF age IS young AND marital_status IS divorced AND education IS basic AND work_years IS long THEN qualitative_score IS low;
+    RULE 13 : IF age IS young AND marital_status IS divorced AND education IS high AND work_years IS short THEN qualitative_score IS low;
+    RULE 14 : IF age IS young AND marital_status IS divorced AND education IS high AND work_years IS medium THEN qualitative_score IS medium;
+    RULE 15 : IF age IS middle_aged AND education IS basic AND work_years IS long THEN qualitative_score IS medium;
+    RULE 16 : IF age IS middle_aged AND (education IS vocational OR education IS medium) AND work_years IS medium THEN qualitative_score IS medium;
+    RULE 17 : IF age IS middle_aged AND (education IS vocational OR education IS medium) AND work_years IS long THEN qualitative_score IS high;
+    RULE 18 : IF age IS middle_aged AND education IS high AND work_years IS short THEN qualitative_score IS medium;
+    RULE 19 : IF age IS middle_aged AND education IS high AND work_years IS medium THEN qualitative_score IS high;
+    RULE 20 : IF age IS old AND work_years IS short THEN qualitative_score IS low;
+    RULE 21 : IF age IS old AND marital_status IS single AND (education IS vocational OR education IS medium) AND (work_years IS medium OR work_years IS long) THEN qualitative_score IS medium;
+    RULE 22 : IF age IS old AND marital_status IS single AND education IS basic AND work_years IS long THEN qualitative_score IS medium;
+    RULE 23 : IF age IS old AND marital_status IS single AND education IS high AND work_years IS medium THEN qualitative_score IS high;
+    RULE 24 : IF age IS old AND (marital_status IS married OR marital_status IS divorced OR marital_status IS widower) AND education IS basic AND work_years IS medium THEN qualitative_score IS low;
+    RULE 25 : IF age IS old AND (marital_status IS married OR marital_status IS divorced OR marital_status IS widower) AND education IS basic AND work_years IS long THEN qualitative_score IS medium;
+    RULE 26 : IF age IS old AND (marital_status IS married OR marital_status IS divorced OR marital_status IS widower) AND (education IS vocational OR education IS medium) AND (work_years IS medium OR work_years IS long) THEN qualitative_score IS medium;
+    RULE 27 : IF age IS old AND (marital_status IS married OR marital_status IS divorced OR marital_status IS widower) AND education IS high AND work_years IS medium THEN qualitative_score IS medium;
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK

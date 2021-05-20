@@ -32,7 +32,7 @@ class QualitativeAnalysis(model: ItemViewModel<BasicClientInfo>) : FuzzyFunction
         }
     }
 
-    override fun filename() = "./qualitative_analysis.fcl"
+    override fun filename() = "./fcl/qualitative_analysis.fcl"
 
     override fun outputVariableName() = "qualitative_score"
 }
