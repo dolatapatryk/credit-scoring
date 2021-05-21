@@ -45,6 +45,13 @@ class BasicClientInfoView : View("Podstawowe informacje") {
                     }
                 }
             }
+            button("dialog") {
+                action {
+                    find<ResultDialogView> {
+                        openModal()
+                    }
+                }
+            }
         }
     }
 }

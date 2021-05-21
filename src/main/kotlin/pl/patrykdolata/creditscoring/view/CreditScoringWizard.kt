@@ -8,6 +8,14 @@ class CreditScoringWizard : Wizard("Ocena zdolności kredytowej", "Wprowadź inf
     override val canGoNext: BooleanExpression = currentPageComplete
     override val canFinish: BooleanExpression = allPagesComplete
 
+    override fun onSave() {
+        println("onSave")
+        find<ResultDialogView> {
+            openModal()
+            startCalculations()
+        }
+    }
+
     init {
         add(BasicClientInfoView::class)
         add(FinancialClientInfoView::class)
@@ -18,6 +26,6 @@ class CreditScoringWizard : Wizard("Ocena zdolności kredytowej", "Wprowadź inf
         backButtonTextProperty.value = "Cofnij"
         cancelButtonTextProperty.value = "Anuluj"
         nextButtonTextProperty.value = "Dalej"
-        finishButtonTextProperty.value = "Zakończ"
+        finishButtonTextProperty.value = "Oblicz"
     }
 }

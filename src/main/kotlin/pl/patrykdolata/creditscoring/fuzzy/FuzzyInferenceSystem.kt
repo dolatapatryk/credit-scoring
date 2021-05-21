@@ -9,7 +9,7 @@ class FuzzyInferenceSystem {
         val fuzzySystem = FIS.load(fuzzyFunctionBlock.filename(), true)
 
         val functionBlock = fuzzySystem.getFunctionBlock(null)
-        JFuzzyChart.get().chart(functionBlock)
+//        JFuzzyChart.get().chart(functionBlock)
 
         // set variables
         for ((name, value) in fuzzyFunctionBlock.inputVariables()) {
