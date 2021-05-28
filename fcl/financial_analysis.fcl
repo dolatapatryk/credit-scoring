@@ -1,8 +1,7 @@
 FUNCTION_BLOCK financial_analysis
 
 VAR_INPUT
-    income: REAL;
-    expenses: REAL;
+    actual_income: REAL;
     employment_type: REAL;
     contract_expiration: REAL;
 END_VAR;
@@ -12,9 +11,9 @@ VAR_OUTPUT
 END_VAR
 
 FUZZIFY actual_income
-	TERM low := (0, 1) (30, 0.5) (45,0);
-    TERM medium := trian 30 65 75;
-    TERM high := (70, 0) (77, 0.5) (85, 1);
+	TERM low := (0, 1) (1000, 0.5) (2000, 0),
+    TERM medium := (1000, 0) (2000, 0.5) (3000, 1) (5000, 0);
+    TERM high := (2000, 0) (3000, 0.5) (5000, 1), (50000, 1);
 END_FUZZIFY
 
 FUZZIFY employment_type
@@ -25,8 +24,8 @@ END_FUZZIFY
 
 FUZZIFY contract_expiration
 	TERM soon := (0, 1) (6, 1) (12, 0.75), (24, 0);
-	TERM later := (12, 0) (24, 1) (36, 0)
-	TERM never := (36, 1)
+	TERM later := (12, 0) (24, 1) (36, 1) (48, 0)
+	TERM never := (47, 0) (48, 1)
 END_FUZZIFY
 
 DEFUZZIFY financial_score

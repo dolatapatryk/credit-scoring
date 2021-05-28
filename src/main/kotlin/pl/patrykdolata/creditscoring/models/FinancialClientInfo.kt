@@ -24,5 +24,7 @@ enum class EmploymentType(private val type: String, private val fuzzyValue: Int)
     B2B("B2B", 1),
     CONTRACT_OF_MANDATE("Umowa zlecenie", 2);
 
+    fun fuzzyValue() = fuzzyValue
+
     override fun toString(): String = type
 }

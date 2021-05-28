@@ -28,7 +28,7 @@ class ResultDialogView : View("Rezultat") {
             for (i in 1..100) {
                 println(i)
                 Platform.runLater { progressIndicator.progress = i.toDouble() / 100.0 }
-                Thread.sleep(50)
+                Thread.sleep(20)
             }
         }
     }
