@@ -5,7 +5,7 @@ import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart
 
 class FuzzyInferenceSystem {
 
-    fun process(fuzzyFunctionBlock: FuzzyFunctionBlock) {
+    fun process(fuzzyFunctionBlock: FuzzyFunctionBlock): FuzzyResult {
         val fuzzySystem = FIS.load(fuzzyFunctionBlock.filename(), true)
 
         val functionBlock = fuzzySystem.getFunctionBlock(null)
@@ -26,5 +26,11 @@ class FuzzyInferenceSystem {
         println("Membership low: ${outVariable.getMembership("low")}")
         println("Membership medium: ${outVariable.getMembership("medium")}")
         println("Membership high: ${outVariable.getMembership("high")}")
+        val memberships: Map<String, Double> = mapOf(
+            "low" to outVariable.getMembership("low"),
+            "medium" to outVariable.getMembership("medium"),
+            "high" to outVariable.getMembership("high")
+        )
+        return FuzzyResult(outVariable.value, memberships, fuzzyFunctionBlock.inputVariables())
     }
 }

@@ -4,16 +4,16 @@ VAR_INPUT
     actual_income: REAL;
     employment_type: REAL;
     contract_expiration: REAL;
-END_VAR;
+END_VAR
 
 VAR_OUTPUT
     financial_score: REAL;
 END_VAR
 
 FUZZIFY actual_income
-	TERM low := (0, 1) (1000, 0.5) (2000, 0),
+	TERM low := (0, 1) (1000, 0.5) (2000, 0);
     TERM medium := (1000, 0) (2000, 0.5) (3000, 1) (5000, 0);
-    TERM high := (2000, 0) (3000, 0.5) (5000, 1), (50000, 1);
+    TERM high := (2000, 0) (3000, 0.5) (5000, 1) (50000, 1);
 END_FUZZIFY
 
 FUZZIFY employment_type
@@ -23,9 +23,9 @@ FUZZIFY employment_type
 END_FUZZIFY
 
 FUZZIFY contract_expiration
-	TERM soon := (0, 1) (6, 1) (12, 0.75), (24, 0);
-	TERM later := (12, 0) (24, 1) (36, 1) (48, 0)
-	TERM never := (47, 0) (48, 1)
+	TERM soon := (0, 1) (6, 1) (12, 0.75) (24, 0);
+	TERM later := (12, 0) (24, 1) (36, 1) (48, 0);
+	TERM never := (47, 0) (48, 1);
 END_FUZZIFY
 
 DEFUZZIFY financial_score
@@ -42,7 +42,21 @@ RULEBLOCK No1
 	ACT : MIN;
 	ACCU : MAX;
 
-
+    RULE 1 : IF actual_income IS high AND (employment_type IS permanent OR employment_type IS b2b) AND (contract_expiration IS never OR contract_expiration IS later) THEN financial_score IS high;
+    RULE 2 : IF actual_income IS low AND contract_expiration IS soon THEN financial_score IS low;
+    RULE 3 : IF actual_income IS low AND employment_type IS contract_of_mandate THEN financial_score IS low;
+    RULE 4 : IF actual_income IS low AND (employment_type IS permanent OR employment_type IS b2b) AND contract_expiration IS never THEN financial_score IS medium;
+    RULE 5 : IF actual_income IS low AND employment_type IS permanent AND contract_expiration IS later THEN financial_score IS medium;
+    RULE 6 : IF actual_income IS low AND employment_type IS b2b AND contract_expiration IS later THEN financial_score IS low;
+    RULE 7 : IF employment_type IS contract_of_mandate AND contract_expiration IS soon THEN financial_score IS low;
+    RULE 8 : IF actual_income IS medium AND (employment_type IS permanent OR employment_type IS b2b) AND (contract_expiration IS soon OR contract_expiration IS later) THEN financial_score IS medium;
+    RULE 9 : IF actual_income IS medium AND (employment_type IS permanent OR employment_type IS b2b) AND contract_expiration IS never THEN financial_score IS high;
+    RULE 10 : IF actual_income IS medium AND employment_type IS contract_of_mandate AND contract_expiration IS later THEN financial_score IS low;
+    RULE 11 : IF actual_income IS medium AND employment_type IS contract_of_mandate AND contract_expiration IS never THEN financial_score IS medium;
+    RULE 12 : IF actual_income IS high AND employment_type IS permanent AND contract_expiration IS soon THEN financial_score IS medium;
+    RULE 13 : IF actual_income IS high AND employment_type IS b2b AND contract_expiration IS soon THEN financial_score IS medium;
+    RULE 14 : IF actual_income IS high AND employment_type IS contract_of_mandate AND contract_expiration IS later THEN financial_score IS medium;
+    RULE 15 : IF actual_income IS high AND employment_type IS contract_of_mandate AND contract_expiration IS never THEN financial_score IS medium;
 END_RULEBLOCK
 
 END_FUNCTION_BLOCK

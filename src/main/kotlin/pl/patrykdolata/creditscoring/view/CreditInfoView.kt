@@ -2,10 +2,10 @@ package pl.patrykdolata.creditscoring.view
 
 import javafx.beans.binding.DoubleBinding
 import javafx.beans.binding.IntegerBinding
+import pl.patrykdolata.creditscoring.creditInstallmentAmount
 import pl.patrykdolata.creditscoring.integerFilter
 import pl.patrykdolata.creditscoring.integerValidator
 import pl.patrykdolata.creditscoring.models.CreditInfoModel
-import pl.patrykdolata.creditscoring.round
 import tornadofx.*
 
 class CreditInfoView : View("Informacje o kredycie") {
@@ -35,7 +35,7 @@ class CreditInfoView : View("Informacje o kredycie") {
                 text("zł")
             }
             field("Oprocentowanie") {
-                textfield(creditInfo.interest) {  }
+                textfield(creditInfo.interest) { }
                 text("%")
             }
             field("Liczba rat") {
@@ -77,10 +77,12 @@ class CreditInfoView : View("Informacje o kredycie") {
             }
 
             override fun computeValue(): Double {
-                if (creditInfo.installmentsNumber.value == 0) return 0.0
-                val multiplier = 1 + (creditInfo.interest.value/100.0)
-                val result = (creditInfo.amount.value * multiplier) / creditInfo.installmentsNumber.value
-                return result.round(2)
+                return creditInstallmentAmount(
+                    creditInfo.amount.value,
+                    creditInfo.ownContribution.value,
+                    creditInfo.interest.value,
+                    creditInfo.installmentsNumber.value
+                )
             }
 
             override fun dispose() {

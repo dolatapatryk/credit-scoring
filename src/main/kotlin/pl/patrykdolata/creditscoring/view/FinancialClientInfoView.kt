@@ -3,7 +3,6 @@ package pl.patrykdolata.creditscoring.view
 import pl.patrykdolata.creditscoring.app.Styles
 import pl.patrykdolata.creditscoring.fuzzy.FinancialAnalysis
 import pl.patrykdolata.creditscoring.fuzzy.FuzzyInferenceSystem
-import pl.patrykdolata.creditscoring.fuzzy.QualitativeAnalysis
 import pl.patrykdolata.creditscoring.integerFilter
 import pl.patrykdolata.creditscoring.integerValidator
 import pl.patrykdolata.creditscoring.models.EmploymentType
@@ -40,6 +39,7 @@ class FinancialClientInfoView : View("Zatrudnienie i finanse") {
             }
             field("Forma zatrudnienia") {
                 combobox(financialClientInfo.employmentType, EmploymentType.values().toList())
+                    .required(message = "Wybierz formę zatrudnienia")
             }
             field("Umowa do:\n(czas nieokreślony - zostaw puste)") {
                 datepicker(financialClientInfo.contractEndDate) {

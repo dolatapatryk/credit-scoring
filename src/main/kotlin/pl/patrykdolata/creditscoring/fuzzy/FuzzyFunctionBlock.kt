@@ -1,9 +1,13 @@
 package pl.patrykdolata.creditscoring.fuzzy
 
+import pl.patrykdolata.creditscoring.creditInstallmentAmount
 import pl.patrykdolata.creditscoring.models.BasicClientInfo
+import pl.patrykdolata.creditscoring.models.CreditInfo
 import pl.patrykdolata.creditscoring.models.FinancialClientInfo
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
+
+data class FuzzyResult(val score: Double, val memberships: Map<String, Double>, val inputVariables: Map<String, Double>)
 
 sealed class FuzzyFunctionBlock {
 
@@ -47,6 +51,32 @@ class FinancialAnalysis(private val model: FinancialClientInfo) :
             "actual_income" to actualIncome.toDouble(),
             "employment_type" to model.employmentType.fuzzyValue().toDouble(),
             "contract_expiration" to contractExpiration.toDouble()
+        )
+    }
+}
+
+class CreditScore(
+    private val qualitativeAnalysis: FuzzyResult,
+    private val financialAnalysis: FuzzyResult,
+    private val creditInfo: CreditInfo
+) : FuzzyFunctionBlock() {
+
+    override fun filename() = "./fcl/credit_score.fcl"
+
+    override fun outputVariableName() = "credit_score"
+
+    override fun inputVariables(): Map<String, Double> {
+        val creditInstallmentAmount = creditInstallmentAmount(
+            creditInfo.amountValue,
+            creditInfo.ownContributionValue,
+            creditInfo.interestValue,
+            creditInfo.installmentsNumber
+        )
+        val incomeInstallmentDiff = financialAnalysis.inputVariables["actual_income"]!! - creditInstallmentAmount
+        return mapOf(
+            "qualitative_score" to qualitativeAnalysis.score,
+            "financial_score" to financialAnalysis.score,
+            "income_installment_difference" to incomeInstallmentDiff
         )
     }
 }

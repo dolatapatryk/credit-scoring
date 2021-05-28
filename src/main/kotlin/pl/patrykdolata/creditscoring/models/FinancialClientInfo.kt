@@ -5,11 +5,11 @@ import javafx.beans.property.SimpleObjectProperty
 import tornadofx.ItemViewModel
 import java.time.LocalDate
 
-class FinancialClientInfo(incomeValue: Int, expensesValue: Int, val employmentType: EmploymentType,
-                          endOfContract: LocalDate? = null) {
+class FinancialClientInfo(val incomeValue: Int, val expensesValue: Int, val employmentType: EmploymentType,
+                          val endOfContract: LocalDate? = null) {
     val income = SimpleIntegerProperty(this, "income", incomeValue)
     val expenses = SimpleIntegerProperty(this, "expenses", expensesValue)
-    val contractEndDate = SimpleObjectProperty<LocalDate>()
+    val contractEndDate = SimpleObjectProperty<LocalDate>(this, "contractEndDate", endOfContract)
 }
 
 class FinancialClientInfoModel : ItemViewModel<FinancialClientInfo>() {
@@ -17,6 +17,10 @@ class FinancialClientInfoModel : ItemViewModel<FinancialClientInfo>() {
     val expenses = bind(FinancialClientInfo::expenses, autocommit = true)
     val employmentType = bind(FinancialClientInfo::employmentType, autocommit = true)
     val contractEndDate = bind(FinancialClientInfo::contractEndDate, autocommit = true)
+
+    override fun onCommit() {
+        item = FinancialClientInfo(income.value, expenses.value, employmentType.value, contractEndDate.value)
+    }
 }
 
 enum class EmploymentType(private val type: String, private val fuzzyValue: Int) {
