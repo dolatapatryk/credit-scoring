@@ -23,7 +23,7 @@ FUZZIFY financial_score
 END_FUZZIFY
 
 FUZZIFY income_installment_difference
-	TERM low := (0, 1) (1000, 0.5) (2000, 0);
+	TERM low := (-50000, 1) (0, 1) (1000, 0.5) (2000, 0);
     TERM medium := (1000, 0) (2000, 0.5) (3000, 1) (5000, 0);
     TERM high := (2000, 0) (3000, 0.5) (5000, 1) (50000, 1);
 END_FUZZIFY
@@ -43,8 +43,33 @@ RULEBLOCK No1
 	ACT : MIN;
 	ACCU : MAX;
 
-    RULE 1 : IF qualitative_score IS high AND financial_score IS high AND income_installment_difference IS high THEN credit_score IS high;
-
+    RULE 1 : IF qualitative_score IS low AND financial_score IS low AND income_installment_difference IS low THEN credit_score IS low;
+    RULE 2 : IF qualitative_score IS low AND financial_score IS low AND income_installment_difference IS medium THEN credit_score IS low;
+    RULE 3 : IF qualitative_score IS low AND financial_score IS low AND income_installment_difference IS high THEN credit_score IS low;
+    RULE 4 : IF qualitative_score IS low AND financial_score IS medium AND income_installment_difference IS low THEN credit_score IS low;
+    RULE 5 : IF qualitative_score IS low AND financial_score IS medium AND income_installment_difference IS medium THEN credit_score IS low;
+    RULE 6 : IF qualitative_score IS low AND financial_score IS medium AND income_installment_difference IS high THEN credit_score IS medium;
+    RULE 7 : IF qualitative_score IS low AND financial_score IS high AND income_installment_difference IS low THEN credit_score IS low;
+    RULE 8 : IF qualitative_score IS low AND financial_score IS high AND income_installment_difference IS medium THEN credit_score IS medium;
+    RULE 9 : IF qualitative_score IS low AND financial_score IS high AND income_installment_difference IS high THEN credit_score IS medium;
+    RULE 10 : IF qualitative_score IS medium AND financial_score IS low AND income_installment_difference IS low THEN credit_score IS low;
+    RULE 11 : IF qualitative_score IS medium AND financial_score IS low AND income_installment_difference IS medium THEN credit_score IS low;
+    RULE 12 : IF qualitative_score IS medium AND financial_score IS low AND income_installment_difference IS high THEN credit_score IS medium;
+    RULE 13 : IF qualitative_score IS medium AND financial_score IS medium AND income_installment_difference IS low THEN credit_score IS low;
+    RULE 14 : IF qualitative_score IS medium AND financial_score IS medium AND income_installment_difference IS medium THEN credit_score IS medium;
+    RULE 15 : IF qualitative_score IS medium AND financial_score IS medium AND income_installment_difference IS high THEN credit_score IS high;
+    RULE 16 : IF qualitative_score IS medium AND financial_score IS high AND income_installment_difference IS low THEN credit_score IS medium;
+    RULE 17 : IF qualitative_score IS medium AND financial_score IS high AND income_installment_difference IS medium THEN credit_score IS medium;
+    RULE 18 : IF qualitative_score IS medium AND financial_score IS high AND income_installment_difference IS high THEN credit_score IS high;
+    RULE 19 : IF qualitative_score IS high AND financial_score IS low AND income_installment_difference IS low THEN credit_score IS low;
+    RULE 20 : IF qualitative_score IS high AND financial_score IS low AND income_installment_difference IS medium THEN credit_score IS medium;
+    RULE 21 : IF qualitative_score IS high AND financial_score IS low AND income_installment_difference IS high THEN credit_score IS medium;
+    RULE 22 : IF qualitative_score IS high AND financial_score IS medium AND income_installment_difference IS low THEN credit_score IS medium;
+    RULE 23 : IF qualitative_score IS high AND financial_score IS medium AND income_installment_difference IS medium THEN credit_score IS medium;
+    RULE 24 : IF qualitative_score IS high AND financial_score IS medium AND income_installment_difference IS high THEN credit_score IS high;
+    RULE 25 : IF qualitative_score IS high AND financial_score IS high AND income_installment_difference IS low THEN credit_score IS medium;
+    RULE 26 : IF qualitative_score IS high AND financial_score IS high AND income_installment_difference IS medium THEN credit_score IS high;
+    RULE 27 : IF qualitative_score IS high AND financial_score IS high AND income_installment_difference IS high THEN credit_score IS high;
 END_RULEBLOCK
 
 END_FUNCTION_BLOCK

@@ -7,10 +7,10 @@ import java.time.LocalDate
 
 internal class FuzzyInferenceSystemTest {
 
-    val age = 30
+    val age = 17
     val maritalStatus = MaritalStatus.MARRIED
-    val education = Education.HIGH
-    val workYears = 12
+    val education = Education.MEDIUM
+    val workYears = 1
 
     val income = 16000
     val expenses = 3500
@@ -20,7 +20,7 @@ internal class FuzzyInferenceSystemTest {
     val creditAmount = 320000
     val ownContribution = 60000
     val interest = 10.0
-    val installmentsNumber = 120
+    val installmentsNumber = 1
 
     val fuzzyInferenceSystem = FuzzyInferenceSystem()
 
