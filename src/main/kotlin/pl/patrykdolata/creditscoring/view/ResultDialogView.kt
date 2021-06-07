@@ -40,21 +40,26 @@ class ResultDialogView : View("Rezultat") {
     override val root = form {
         prefHeight = 300.0
         prefWidth = 300.0
+        alignment = Pos.TOP_CENTER
         fieldset(title) {
-            textLabel = text("Analiza jakościowa...") {
-                addClass(Styles.heading)
-            }
-            progressIndicator = progressindicator()
-            field {
-                hbox {
-                    alignment = Pos.CENTER
-                    image = imageview("green.png") {
-                        hide()
-                        fitHeight = 100.0
-                        fitWidth = 100.0
+            hbox {
+                alignment = Pos.CENTER
+                textLabel = text("Analiza jakościowa...") {
+                    addClass(Styles.heading)
+                }
+                progressIndicator = progressindicator()
+                field {
+                    hbox {
+                        alignment = Pos.CENTER
+                        image = imageview("green.png") {
+                            hide()
+                            fitHeight = 100.0
+                            fitWidth = 100.0
+                        }
                     }
                 }
             }
+
         }
 
     }
