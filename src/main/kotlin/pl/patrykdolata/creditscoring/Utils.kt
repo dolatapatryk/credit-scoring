@@ -8,10 +8,19 @@ import tornadofx.isInt
 fun integerFilter(text: TextFormatter.Change): Boolean =
     text.controlNewText.isInt() && text.controlNewText.toInt() > 0
 
+fun integerFilterWithZero(text: TextFormatter.Change): Boolean =
+    text.controlNewText.isInt()
+
 fun integerValidator(text: String?, context: ValidationContext, message: String = "Wprowadź prawidłową kwotę")
         : ValidationMessage? {
     val amount = text?.toIntOrNull()
     return if (amount == null || amount == 0) context.error(message) else null
+}
+
+fun integerValidatorWithZero(text: String?, context: ValidationContext, message: String = "Wprowadź prawidłową kwotę")
+        : ValidationMessage? {
+    val amount = text?.toIntOrNull()
+    return if (amount == null) context.error(message) else null
 }
 
 fun Double.round(decimals: Int): Double {

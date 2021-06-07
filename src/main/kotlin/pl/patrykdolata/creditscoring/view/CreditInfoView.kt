@@ -1,15 +1,21 @@
 package pl.patrykdolata.creditscoring.view
 
+import javafx.beans.binding.BooleanExpression
 import javafx.beans.binding.DoubleBinding
 import javafx.beans.binding.IntegerBinding
-import pl.patrykdolata.creditscoring.creditInstallmentAmount
-import pl.patrykdolata.creditscoring.integerFilter
-import pl.patrykdolata.creditscoring.integerValidator
+import pl.patrykdolata.creditscoring.*
 import pl.patrykdolata.creditscoring.models.CreditInfoModel
 import tornadofx.*
 
 class CreditInfoView : View("Informacje o kredycie") {
     private val creditInfo: CreditInfoModel by inject()
+
+//    override val complete: BooleanExpression = creditInfo.valid(
+//        creditInfo.amount,
+//        creditInfo.ownContribution,
+//        creditInfo.interest,
+//        creditInfo.installmentsNumber
+//    )
 
     override val root = form {
         fieldset(title) {
@@ -23,8 +29,8 @@ class CreditInfoView : View("Informacje o kredycie") {
             }
             field("Wkład własny") {
                 textfield(creditInfo.ownContribution) {
-                    filterInput { integerFilter(it) }
-                    validator { integerValidator(it, this) }
+                    filterInput { integerFilterWithZero(it) }
+                    validator { integerValidatorWithZero(it, this) }
                 }
                 text("zł")
             }

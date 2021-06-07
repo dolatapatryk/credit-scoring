@@ -20,7 +20,7 @@ class FuzzyInferenceSystem {
 
         val outVariableName = fuzzyFunctionBlock.outputVariableName()
         val outVariable = functionBlock.getVariable(outVariableName)
-        JFuzzyChart.get().chart(outVariable, outVariable.defuzzifier, true)
+//        JFuzzyChart.get().chart(outVariable, outVariable.defuzzifier, true)
 
         println(outVariable.value)
         println("Membership low: ${outVariable.getMembership("low")}")

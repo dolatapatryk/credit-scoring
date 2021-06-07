@@ -1,5 +1,6 @@
 package pl.patrykdolata.creditscoring.view
 
+import javafx.beans.binding.BooleanExpression
 import pl.patrykdolata.creditscoring.app.Styles
 import pl.patrykdolata.creditscoring.fuzzy.FuzzyInferenceSystem
 import pl.patrykdolata.creditscoring.fuzzy.QualitativeAnalysis
@@ -14,6 +15,13 @@ class BasicClientInfoView : View("Podstawowe informacje") {
     private val basicClientInfo: BasicClientInfoModel by inject()
 
     private val fuzzyInferenceSystem: FuzzyInferenceSystem = FuzzyInferenceSystem()
+
+//    override val complete: BooleanExpression = basicClientInfo.valid(
+//        basicClientInfo.age,
+//        basicClientInfo.maritalStatus,
+//        basicClientInfo.education,
+//        basicClientInfo.workYears
+//    )
 
     override val root = form {
         fieldset(title) {

@@ -22,7 +22,7 @@ internal class FuzzyInferenceSystemTest {
     val interest = 10.0
     val installmentsNumber = 1
 
-    val fuzzyInferenceSystem = FuzzyInferenceSystem()
+    private val fuzzyInferenceSystem = FuzzyInferenceSystem()
 
     @Test
     fun creditScoringTest() {

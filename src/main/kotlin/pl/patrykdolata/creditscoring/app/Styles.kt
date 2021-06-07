@@ -9,6 +9,7 @@ class Styles : Stylesheet() {
         val heading by cssclass()
         val clearButton by cssclass()
         val w100 by cssclass()
+        val center by cssclass()
     }
 
     init {
@@ -22,6 +23,9 @@ class Styles : Stylesheet() {
         }
         w100 {
             minWidth = 250.px
+        }
+        center {
+            center
         }
     }
 }
