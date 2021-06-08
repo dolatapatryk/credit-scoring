@@ -10,12 +10,12 @@ import tornadofx.*
 class CreditInfoView : View("Informacje o kredycie") {
     private val creditInfo: CreditInfoModel by inject()
 
-//    override val complete: BooleanExpression = creditInfo.valid(
-//        creditInfo.amount,
-//        creditInfo.ownContribution,
-//        creditInfo.interest,
-//        creditInfo.installmentsNumber
-//    )
+    override val complete: BooleanExpression = creditInfo.valid(
+        creditInfo.amount,
+        creditInfo.ownContribution,
+        creditInfo.interest,
+        creditInfo.installmentsNumber
+    )
 
     override val root = form {
         fieldset(title) {
@@ -79,7 +79,12 @@ class CreditInfoView : View("Informacje o kredycie") {
     private fun creditInstallmentBinding(): DoubleBinding {
         return object : DoubleBinding() {
             init {
-                super.bind(creditInfo.amount, creditInfo.interest, creditInfo.installmentsNumber)
+                super.bind(
+                    creditInfo.amount,
+                    creditInfo.ownContribution,
+                    creditInfo.interest,
+                    creditInfo.installmentsNumber
+                )
             }
 
             override fun computeValue(): Double {
@@ -92,7 +97,12 @@ class CreditInfoView : View("Informacje o kredycie") {
             }
 
             override fun dispose() {
-                super.unbind(creditInfo.amount, creditInfo.interest, creditInfo.installmentsNumber)
+                super.unbind(
+                    creditInfo.amount,
+                    creditInfo.ownContribution,
+                    creditInfo.interest,
+                    creditInfo.installmentsNumber
+                )
             }
         }
     }

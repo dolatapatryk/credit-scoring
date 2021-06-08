@@ -2,8 +2,6 @@ package pl.patrykdolata.creditscoring.view
 
 import javafx.beans.binding.BooleanExpression
 import pl.patrykdolata.creditscoring.app.Styles
-import pl.patrykdolata.creditscoring.fuzzy.FinancialAnalysis
-import pl.patrykdolata.creditscoring.fuzzy.FuzzyInferenceSystem
 import pl.patrykdolata.creditscoring.integerFilter
 import pl.patrykdolata.creditscoring.integerValidator
 import pl.patrykdolata.creditscoring.models.EmploymentType
@@ -13,14 +11,12 @@ import tornadofx.*
 class FinancialClientInfoView : View("Zatrudnienie i finanse") {
     private val financialClientInfo: FinancialClientInfoModel by inject()
 
-    private val fuzzyInferenceSystem: FuzzyInferenceSystem = FuzzyInferenceSystem()
-
-//    override val complete: BooleanExpression = financialClientInfo.valid(
-//        financialClientInfo.income,
-//        financialClientInfo.expenses,
-//        financialClientInfo.employmentType,
-//        financialClientInfo.contractEndDate
-//    )
+    override val complete: BooleanExpression = financialClientInfo.valid(
+        financialClientInfo.income,
+        financialClientInfo.expenses,
+        financialClientInfo.employmentType,
+        financialClientInfo.contractEndDate
+    )
 
     override val root = form {
         fieldset(title) {
@@ -57,17 +53,6 @@ class FinancialClientInfoView : View("Zatrudnienie i finanse") {
                 text("✕") {
                     onLeftClick { financialClientInfo.contractEndDate.value = null }
                     addClass(Styles.clearButton)
-                }
-            }
-            button("xd") {
-                action {
-                    println("click")
-                    financialClientInfo.commit()
-                    println(financialClientInfo.item)
-                    if (financialClientInfo.item != null) {
-                        val financialAnalysis = FinancialAnalysis(financialClientInfo.item)
-                        fuzzyInferenceSystem.process(financialAnalysis)
-                    }
                 }
             }
         }

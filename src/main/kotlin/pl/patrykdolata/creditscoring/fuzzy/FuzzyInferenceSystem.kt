@@ -5,11 +5,11 @@ import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart
 
 class FuzzyInferenceSystem {
 
-    fun process(fuzzyFunctionBlock: FuzzyFunctionBlock): FuzzyResult {
+    fun process(fuzzyFunctionBlock: FuzzyFunctionBlock, showCharts: Boolean = false): FuzzyResult {
         val fuzzySystem = FIS.load(fuzzyFunctionBlock.filename(), true)
 
         val functionBlock = fuzzySystem.getFunctionBlock(null)
-//        JFuzzyChart.get().chart(functionBlock)
+        if (showCharts) JFuzzyChart.get().chart(functionBlock)
 
         // set variables
         for ((name, value) in fuzzyFunctionBlock.inputVariables()) {
@@ -20,7 +20,7 @@ class FuzzyInferenceSystem {
 
         val outVariableName = fuzzyFunctionBlock.outputVariableName()
         val outVariable = functionBlock.getVariable(outVariableName)
-//        JFuzzyChart.get().chart(outVariable, outVariable.defuzzifier, true)
+        if (showCharts) JFuzzyChart.get().chart(outVariable, outVariable.defuzzifier, true)
 
         println(outVariable.value)
         println("Membership low: ${outVariable.getMembership("low")}")

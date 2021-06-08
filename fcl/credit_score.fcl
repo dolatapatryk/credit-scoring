@@ -13,26 +13,26 @@ END_VAR
 FUZZIFY qualitative_score
 	TERM low := (0, 1) (30, 0.5) (45,0);
     TERM medium := trian 30 65 75;
-    TERM high := (70, 0) (77, 0.5) (85, 1);
+    TERM high := (70, 0) (77, 0.5) (85, 1) (100, 1);
 END_FUZZIFY
 
 FUZZIFY financial_score
 	TERM low := (0, 1) (30, 0.5) (45,0);
     TERM medium := trian 30 65 75;
-    TERM high := (70, 0) (77, 0.5) (85, 1);
+    TERM high := (70, 0) (77, 0.5) (85, 1) (100, 1);
 END_FUZZIFY
 
 FUZZIFY income_installment_difference
-	TERM low := (-50000, 1) (0, 1) (1000, 0.5) (2000, 0);
-    TERM medium := (1000, 0) (2000, 0.5) (3000, 1) (5000, 0);
-    TERM high := (2000, 0) (3000, 0.5) (5000, 1) (50000, 1);
+	TERM low := (-50000, 1) (0, 1) (500, 0.5) (1000, 0);
+    TERM medium := (0, 0) (500, 0) (1000, 0.5) (3000, 1) (5000, 0);
+    TERM high := (0, 0) (2000, 0) (3000, 0.5) (5000, 1) (50000, 1);
 END_FUZZIFY
 
 
 DEFUZZIFY credit_score
 	TERM low := (0, 1) (30, 0.5) (45,0);
 	TERM medium := trian 30 65 75;
-	TERM high := (70, 0) (77, 0.5) (85, 1);
+	TERM high := (70, 0) (77, 0.5) (85, 1) (100, 1);
 	METHOD : COG;
 	DEFAULT := 0;
 END_DEFUZZIFY
